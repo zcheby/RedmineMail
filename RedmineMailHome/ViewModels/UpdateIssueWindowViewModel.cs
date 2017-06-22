@@ -203,8 +203,7 @@ namespace RedmineMail.ViewModels
             //宛先
             var to = System.Configuration.ConfigurationManager.AppSettings["ToMailAddress"];
             //題名
-            //string subject = "RE: [" + this.Project + " - " + this.Tracker + " " + "#" + this.Number + "] " + this.Title;
-            string subject = string.Format("RE: [{0} - {1} #{2}] {3}", this.Project, this.Tracker, this.Number, this.Title);
+            string subject = string.Format("RE: #[{0} - {1} #{2}] {3}", this.Project,  this.Tracker, this.Number, this.Title);
             // オーダー番号
             var projectId = System.Configuration.ConfigurationManager.AppSettings["ProjectId"];
             //本文
@@ -215,9 +214,10 @@ assigned to: {2}%0D%0A
 due date: {3}%0D%0A
 "           , this.SelectedStatus.Name, this.SelectedPriority.Name, this.SelectedUser.MailAdress, this.DueDate.ToString("yyyy-MM-dd"));
 
+            var mail = string.Format("mailto:{0}?subject={1}&body={2}", to, subject, body);
+
             //標準のメールクライアントを開く
-            System.Diagnostics.Process.Start(
-                string.Format("mailto:{0}?subject={1}&body={2}", to, subject, body));
+            System.Diagnostics.Process.Start(mail);
 
             this.parentViewModel.UpdateIssueList();
             // ウィンドウを閉じる
